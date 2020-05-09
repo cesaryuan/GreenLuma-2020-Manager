@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8A2401D7-EE59-48EC-A6D8-069EF807C82A}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>GLR_Updater</RootNamespace>
-    <AssemblyName>GLR Updater</AssemblyName>
+    <RootNamespace>GL2020_Updater</RootNamespace>
+    <AssemblyName>GL2020 Updater</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -53,7 +53,7 @@
     <ManifestCertificateThumbprint>79505D8EC9DC2A5471E43CC5753D82A08BBB8468</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>GLR Updater_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>GL2020 Updater_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>

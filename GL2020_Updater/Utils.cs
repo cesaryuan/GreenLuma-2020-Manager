@@ -7,11 +7,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Diagnostics;
 
-namespace GLR_Updater {
+namespace GL2020_Updater {
    class Utils {
       public static async Task<string> GetLatest() {
          using (var httpClient = new HttpClient()) {
-            HttpResponseMessage response = await httpClient.GetAsync("https://github.com/ImaniiTy/GreenLuma-Reborn-Manager/releases/latest");
+            HttpResponseMessage response = await httpClient.GetAsync("https://github.com/BlueAmulet/GreenLuma-2020-Manager/releases/latest");
             var header = response.RequestMessage.RequestUri.Segments;
             return header.Last().Substring(1);
          }
@@ -32,7 +32,7 @@ namespace GLR_Updater {
 
       private static void CompletedHandler(object sender, System.ComponentModel.AsyncCompletedEventArgs e) {
          ExtractFile("./Release.zip");
-         Process.Start("GreenLuma Reborn Manager.exe","-NoUpdate -PostUpdate");
+         Process.Start("GreenLuma 2020 Manager.exe","-NoUpdate -PostUpdate");
       }
 
       public static void ExtractFile(string path) {

@@ -71,7 +71,7 @@ class MainWindow(QMainWindow):
 
         # Main Buttons
         self.main_window.generate_btn.clicked.connect(self.generate_app_list)
-        self.main_window.run_GLR_btn.clicked.connect(lambda : self.show_popup("This will restart Steam if it's open do you want to continue?", self.run_GLR))
+        self.main_window.run_GL2020_btn.clicked.connect(lambda : self.show_popup("This will restart Steam if it's open do you want to continue?", self.run_GL2020))
         
         # Settings Window
         self.main_window.settings_btn.clicked.connect(lambda : self.toggle_widget(self.main_window.settings_window))
@@ -198,7 +198,7 @@ class MainWindow(QMainWindow):
         self.toggle_widget(self.main_window.settings_window)
 
     # Generation Functions
-    def run_GLR(self):
+    def run_GL2020(self):
         self.toggle_widget(self.main_window.generic_popup,True)
 
         if not self.generate_app_list(False):

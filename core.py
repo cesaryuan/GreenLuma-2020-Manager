@@ -13,7 +13,7 @@ from requests.exceptions import ConnectionError, ConnectTimeout
 
 BASE_PATH = "{}/GLR_Manager".format(os.getenv("LOCALAPPDATA"))
 PROFILES_PATH = "{}/Profiles".format(BASE_PATH)
-CURRENT_VERSION = "1.3.6"
+CURRENT_VERSION = "1.3.7"
 
 class Game:
     def __init__(self, id, name, type):
@@ -222,7 +222,7 @@ def queryGames(input_):
 
 def runUpdater():
     if "-NoUpdate" not in sys.argv and config.check_update:
-        subprocess.run("GLR Updater.exe")
+        subprocess.run("GL2020 Updater.exe")
     
     # Post update measure
     if "-PostUpdate" in sys.argv:

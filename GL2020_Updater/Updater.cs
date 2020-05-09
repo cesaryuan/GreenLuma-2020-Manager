@@ -6,10 +6,10 @@ using System.Net;
 using System.Diagnostics;
 using Newtonsoft.Json.Linq;
 
-namespace GLR_Updater {
+namespace GL2020_Updater {
    class Updater {
       private string dataPath = Environment.ExpandEnvironmentVariables("%localappdata%/GLR_Manager/");
-      private string downloadURL = "https://github.com/ImaniiTy/GreenLuma-Reborn-Manager/releases/download/v{0}/GreenLuma.Reborn.Manager.zip";
+      private string downloadURL = "https://github.com/BlueAmulet/GreenLuma-2020-Manager/releases/download/v{0}/GreenLuma.2020.Manager.zip";
       private string latestVersionString;
       private string currentVersionString;
       private StreamWriter logger = Utils.CreateLogger();
@@ -34,13 +34,13 @@ namespace GLR_Updater {
          if (currentVersion.CompareTo(latestVersion) < 0) {
             Console.WriteLine("Outdated");
             
-            foreach (var process in Process.GetProcessesByName("GreenLuma Reborn Manager")) {
+            foreach (var process in Process.GetProcessesByName("GreenLuma 2020 Manager")) {
                if(!process.HasExited) {
                   process.Kill();
                }
             }
 
-            while (Process.GetProcessesByName("GreenLuma Reborn Manager").Length > 0) {
+            while (Process.GetProcessesByName("GreenLuma 2020 Manager").Length > 0) {
                System.Threading.Thread.Sleep(500);
             }
 

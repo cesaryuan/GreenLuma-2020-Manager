@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>GreenLuma Reborn Manager</string>
+   <string>GreenLuma 2020 Manager</string>
   </property>
   <property name="styleSheet">
    <string notr="true">background-color: rgb(18, 18, 18);</string>
@@ -616,13 +616,13 @@ font: 75 11pt &quot;Consolas&quot;;</string>
       </font>
      </property>
      <property name="text">
-      <string>GreenLuma Reborn Manager</string>
+      <string>GreenLuma 2020 Manager</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
     </widget>
-    <widget class="QPushButton" name="run_GLR_btn">
+    <widget class="QPushButton" name="run_GL2020_btn">
      <property name="geometry">
       <rect>
        <x>525</x>
@@ -635,18 +635,18 @@ font: 75 11pt &quot;Consolas&quot;;</string>
       <cursorShape>PointingHandCursor</cursorShape>
      </property>
      <property name="styleSheet">
-      <string notr="true">#run_GLR_btn {
+      <string notr="true">#run_GL2020_btn {
 	background-color: rgb(0, 116, 217);
 	color: rgb(6, 11, 8);
 }
 
-#run_GLR_btn:hover {
+#run_GL2020_btn:hover {
 	color: rgb(24, 24, 24);
 	background-color: rgb(245, 245, 245);
 }</string>
      </property>
      <property name="text">
-      <string>Run GLR</string>
+      <string>Run GL2020</string>
      </property>
     </widget>
     <widget class="QPushButton" name="search_btn">
@@ -880,7 +880,7 @@ color: rgb(6, 11, 8);</string>
     <zorder>searching_frame</zorder>
     <zorder>create_profile</zorder>
     <zorder>label_4</zorder>
-    <zorder>run_GLR_btn</zorder>
+    <zorder>run_GL2020_btn</zorder>
     <zorder>add_to_profile</zorder>
     <zorder>games_list</zorder>
     <zorder>generate_btn</zorder>

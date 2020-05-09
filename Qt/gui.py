@@ -264,19 +264,19 @@ class Ui_MainWindow(object):
         self.label_4.setFont(font)
         self.label_4.setAlignment(QtCore.Qt.AlignCenter)
         self.label_4.setObjectName("label_4")
-        self.run_GLR_btn = QtWidgets.QPushButton(self.main_panel)
-        self.run_GLR_btn.setGeometry(QtCore.QRect(525, 665, 220, 51))
-        self.run_GLR_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.run_GLR_btn.setStyleSheet("#run_GLR_btn {\n"
+        self.run_GL2020_btn = QtWidgets.QPushButton(self.main_panel)
+        self.run_GL2020_btn.setGeometry(QtCore.QRect(525, 665, 220, 51))
+        self.run_GL2020_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.run_GL2020_btn.setStyleSheet("#run_GL2020_btn {\n"
 "    background-color: rgb(0, 116, 217);\n"
 "    color: rgb(6, 11, 8);\n"
 "}\n"
 "\n"
-"#run_GLR_btn:hover {\n"
+"#run_GL2020_btn:hover {\n"
 "    color: rgb(24, 24, 24);\n"
 "    background-color: rgb(245, 245, 245);\n"
 "}")
-        self.run_GLR_btn.setObjectName("run_GLR_btn")
+        self.run_GL2020_btn.setObjectName("run_GL2020_btn")
         self.search_btn = QtWidgets.QPushButton(self.main_panel)
         self.search_btn.setGeometry(QtCore.QRect(745, 47, 50, 26))
         self.search_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -361,7 +361,7 @@ class Ui_MainWindow(object):
         self.search_result.raise_()
         self.create_profile.raise_()
         self.label_4.raise_()
-        self.run_GLR_btn.raise_()
+        self.run_GL2020_btn.raise_()
         self.add_to_profile.raise_()
         self.games_list.raise_()
         self.generate_btn.raise_()
@@ -441,7 +441,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "GreenLuma Reborn Manager"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "GreenLuma 2020 Manager"))
         self.profile_name.setPlaceholderText(_translate("MainWindow", "Profile Name"))
         self.create_profile_btn.setText(_translate("MainWindow", "Create"))
         self.cancel_profile_btn.setText(_translate("MainWindow", "Cancel"))
@@ -460,8 +460,8 @@ class Ui_MainWindow(object):
         self.compatibility_mode_checkbox.setText(_translate("MainWindow", "Compatibility Mode"))
         self.label_5.setText(_translate("MainWindow", "Searching..."))
         self.create_profile.setText(_translate("MainWindow", "New Profile"))
-        self.label_4.setText(_translate("MainWindow", "GreenLuma Reborn Manager"))
-        self.run_GLR_btn.setText(_translate("MainWindow", "Run GLR"))
+        self.label_4.setText(_translate("MainWindow", "GreenLuma 2020 Manager"))
+        self.run_GL2020_btn.setText(_translate("MainWindow", "Run GL2020"))
         self.add_to_profile.setText(_translate("MainWindow", "Add Games"))
         self.games_list.setSortingEnabled(True)
         self.generate_btn.setText(_translate("MainWindow", "Generate"))

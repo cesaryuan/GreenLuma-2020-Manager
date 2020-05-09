@@ -18,9 +18,9 @@ dist/*
 build/*
 __pycache__/
 
-# GLR_Updater
-GLR_Updater/.vs
-GLR_Updater/bin
-GLR_Updater/obj
-GLR_Updater/packages
-GLR_Updater/*.csproj.user
+# GL2020_Updater
+GL2020_Updater/.vs
+GL2020_Updater/bin
+GL2020_Updater/obj
+GL2020_Updater/packages
+GL2020_Updater/*.csproj.user
