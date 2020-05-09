@@ -204,8 +204,7 @@ class MainWindow(QMainWindow):
         if not self.generate_app_list(False):
             return
 
-        args = ["DLLInjector.exe", "-DisablePreferSystem32Images"]
-        self.replaceConfig("CreateFiles", " 1")
+        args = ["DLLInjector.exe"]
         self.replaceConfig("FileToCreate_1", " NoQuestion.bin")
         
         with core.get_config() as config:
@@ -213,7 +212,7 @@ class MainWindow(QMainWindow):
             config.compatibility_mode = self.main_window.compatibility_mode_checkbox.isChecked()
 
         # if : else used instead of ternary operator for better readability
-        if core.config.compatibility_mode:
+        if core.config.compatibility_mode or core.config.no_hook:
             self.replaceConfig("EnableMitigationsOnChildProcess"," 0")
         else:
             self.replaceConfig("EnableMitigationsOnChildProcess"," 1")
@@ -228,6 +227,8 @@ class MainWindow(QMainWindow):
             self.replaceConfig("Exe"," Steam.exe -inhibitbootstrap")
             self.replaceConfig("WaitForProcessTermination"," 1")
             self.replaceConfig("EnableFakeParentProcess"," 0")
+            self.replaceConfig("CreateFiles", " 1")
+            self.replaceConfig("FileToCreate_2", "")
 
 
         core.os.chdir(core.config.steam_path)

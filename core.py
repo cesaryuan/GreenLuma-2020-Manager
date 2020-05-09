@@ -1,4 +1,4 @@
-import cfscrape
+import cloudscraper
 import os
 import subprocess
 import shutil
@@ -102,7 +102,7 @@ class ProfileManager:
         self.profiles[profile.name] = profile
 
     def create_profile(self, name, games = []):
-        if name is "":
+        if name == "":
             return
         
         self.register_profile(Profile(name,games))
@@ -210,7 +210,7 @@ def queryfy(input_):
     return result
 
 def queryGames(input_):
-    scraper = cfscrape.create_scraper()
+    scraper = cloudscraper.create_scraper()
     try:
         result = scraper.get("https://steamdb.info/search/?a=app&q={0}&type=-1&category=0".format(queryfy(input_)))
     except (ConnectionError, ConnectTimeout) as err:

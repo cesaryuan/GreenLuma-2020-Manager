@@ -48,7 +48,7 @@ class Ui_MainWindow(object):
 "}\n"
 "\n"
 "QPushButton {\n"
-"    color:rgba(232, 232, 232);\n"
+"    color:rgb(232, 232, 232);\n"
 "    border-radius: 4px;\n"
 "    border: 1px solid rgb(179, 179, 179);\n"
 "    font: 75 11pt \"Consolas\";\n"
