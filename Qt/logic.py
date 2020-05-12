@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem, QShortcu
 from PyQt5.QtCore import  QAbstractItemModel, Qt, QModelIndex, QVariant, QThread, QEvent, pyqtSignal, QAbstractTableModel, QSortFilterProxyModel
 from PyQt5.QtGui import QKeySequence, QIcon
 from shutil import copyfile
+import os
 import core
 import subprocess
 import psutil
@@ -27,6 +28,7 @@ class MainWindow(QMainWindow):
         self.main_window.profile_create_window.setHidden(True)
         self.main_window.searching_frame.setHidden(True)
         self.main_window.set_steam_path_window.setHidden(True)
+        self.main_window.set_greenluma_path_window.setHidden(True)
         self.main_window.closing_steam.setHidden(True)
         self.main_window.generic_popup.setHidden(True)
         self.main_window.settings_window.setHidden(True)
@@ -41,6 +43,7 @@ class MainWindow(QMainWindow):
         self.show_profile_names()
         self.show_profile_games(profile_manager.profiles[self.main_window.profile_selector.currentText()])
         self.setup_steam_path()
+        self.setup_greenluma_path()
         self.setup_search_table()
         # self.main_window.main_panel.raise_()
 
@@ -64,6 +67,10 @@ class MainWindow(QMainWindow):
         self.main_window.save_steam_path.clicked.connect(self.set_steam_path)
         self.main_window.cancel_steam_path_btn.clicked.connect(lambda : self.toggle_widget(self.main_window.set_steam_path_window))
 
+        # GreenLuma Path
+        self.main_window.save_greenluma_path.clicked.connect(self.set_greenluma_path)
+        self.main_window.cancel_greenluma_path_btn.clicked.connect(lambda : self.toggle_widget(self.main_window.set_greenluma_path_window))
+
         # Search Area
         self.main_window.search_btn.clicked.connect(self.search_games)
         self.main_window.game_search_text.returnPressed.connect(self.search_games)
@@ -71,7 +78,7 @@ class MainWindow(QMainWindow):
 
         # Main Buttons
         self.main_window.generate_btn.clicked.connect(self.generate_app_list)
-        self.main_window.run_GL2020_btn.clicked.connect(lambda : self.show_popup("This will restart Steam if it's open do you want to continue?", self.run_GL2020))
+        self.main_window.run_GreenLuma_btn.clicked.connect(lambda : self.show_popup("This will restart Steam if it's open do you want to continue?", self.run_GreenLuma))
         
         # Settings Window
         self.main_window.settings_btn.clicked.connect(lambda : self.toggle_widget(self.main_window.settings_window))
@@ -193,12 +200,13 @@ class MainWindow(QMainWindow):
     def save_settings(self):
         with core.get_config() as config:
             config.steam_path = self.main_window.settings_steam_path.text()
+            config.greenluma_path = self.main_window.settings_greenluma_path.text()
             config.check_update = self.main_window.update_checkbox.isChecked()
 
         self.toggle_widget(self.main_window.settings_window)
 
     # Generation Functions
-    def run_GL2020(self):
+    def run_GreenLuma(self):
         self.toggle_widget(self.main_window.generic_popup,True)
 
         if not self.generate_app_list(False):
@@ -218,27 +226,36 @@ class MainWindow(QMainWindow):
             self.replaceConfig("EnableMitigationsOnChildProcess"," 1")
 
         if core.config.no_hook:
-            self.replaceConfig("Exe"," Steam.exe")
+            self.replaceConfig("CommandLine","")
             self.replaceConfig("WaitForProcessTermination"," 0")
             self.replaceConfig("EnableFakeParentProcess"," 1")
             self.replaceConfig("CreateFiles", " 2")
             self.replaceConfig("FileToCreate_2", " NoHook.bin", True)
         else:
-            self.replaceConfig("Exe"," Steam.exe -inhibitbootstrap")
+            self.replaceConfig("CommandLine"," -inhibitbootstrap")
             self.replaceConfig("WaitForProcessTermination"," 1")
             self.replaceConfig("EnableFakeParentProcess"," 0")
             self.replaceConfig("CreateFiles", " 1")
             self.replaceConfig("FileToCreate_2", "")
 
+        if core.config.steam_path != core.config.greenluma_path:
+            self.replaceConfig("UseFullPathsFromIni", " 1")
+            self.replaceConfig("Exe", " " + os.path.join(core.config.steam_path, "Steam.exe"))
+            self.replaceConfig("Dll", " " + os.path.join(core.config.greenluma_path, "GreenLuma_2020_x86.dll"))
+        else:
+            self.replaceConfig("UseFullPathsFromIni", " 0")
+            self.replaceConfig("Exe", " Steam.exe")
+            self.replaceConfig("Dll", " GreenLuma_2020_x86.dll")
 
-        core.os.chdir(core.config.steam_path)
         if self.is_steam_running():
             self.toggle_widget(self.main_window.closing_steam)
+            os.chdir(core.config.steam_path)
             subprocess.run(["Steam.exe", "-shutdown"]) #Shutdown Steam
             while self.is_steam_running():
                 core.time.sleep(1)
             core.time.sleep(1)
         
+        os.chdir(core.config.greenluma_path)
         subprocess.Popen(args)
         self.close()
 
@@ -281,17 +298,50 @@ class MainWindow(QMainWindow):
     def set_steam_path(self):
         path = self.main_window.steam_path.text()
         if not path == "":
-            with core.get_config() as config:
-                config.steam_path = path
-        
-        self.toggle_widget(self.main_window.set_steam_path_window)
+            if os.path.isdir(path):
+                if os.path.isfile(os.path.join(path, "Steam.exe")):
+                    path = os.path.abspath(path)
+                    with core.get_config() as config:
+                        config.steam_path = path
+                        if config.greenluma_path == "" and os.path.isfile(os.path.join(path, "DLLInjector.exe")):
+                            config.greenluma_path = path
+                    self.toggle_widget(self.main_window.set_steam_path_window)
+                else:
+                    self.main_window.label_steam_error.setText("Steam.exe not in path")
+            else:
+                self.main_window.label_steam_error.setText("Not a valid path")
+        else:
+            self.main_window.label_steam_error.setText("Please enter a path")
 
     def setup_steam_path(self):
-        if core.config.steam_path != "":
+        if core.config.steam_path != "" and os.path.isfile(os.path.join(core.config.steam_path, "Steam.exe")):
             self.main_window.settings_steam_path.setText(core.config.steam_path)
             return
 
         self.toggle_widget(self.main_window.set_steam_path_window)
+
+    def set_greenluma_path(self):
+        path = self.main_window.greenluma_path.text()
+        if not path == "":
+            if os.path.isdir(path):
+                if os.path.isfile(os.path.join(path, "DLLInjector.exe")):
+                    path = os.path.abspath(path)
+                    with core.get_config() as config:
+                        config.greenluma_path = path
+                    self.toggle_widget(self.main_window.set_greenluma_path_window)
+                else:
+                    self.main_window.label_greenluma_error.setText("DLLInjector.exe not in path")
+            else:
+                self.main_window.label_greenluma_error.setText("Not a valid path")
+        else:
+            self.main_window.label_greenluma_error.setText("Please enter a path")
+
+    def setup_greenluma_path(self):
+        if core.config.greenluma_path != "" and os.path.isfile(os.path.join(core.config.greenluma_path, "DLLInjector.exe")):
+            self.main_window.settings_greenluma_path.setText(core.config.greenluma_path)
+            return
+
+        self.toggle_widget(self.main_window.set_greenluma_path_window)
 
     def drop_event_handler(self, event):
         self.add_selected()
@@ -311,7 +361,7 @@ class MainWindow(QMainWindow):
 
     def replaceConfig(self, name, new_value, append = False):
         found = False
-        with fileinput.input(core.config.steam_path + "/DllInjector.ini", inplace=True) as fp:
+        with fileinput.input(core.config.greenluma_path + "/DLLInjector.ini", inplace=True) as fp:
             for line in fp:
                 if not line.startswith("#"):
                     tokens = line.split("=")
@@ -322,7 +372,7 @@ class MainWindow(QMainWindow):
                 print(line, end = "")
             
         if append and not found:
-            with open(core.config.steam_path + "/DllInjector.ini", "at") as f:
+            with open(core.config.greenluma_path + "/DLLInjector.ini", "at") as f:
                 f.write("\n{0} = {1}".format(name, new_value))
 
 class SearchThread(QThread):

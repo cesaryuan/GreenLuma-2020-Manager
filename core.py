@@ -13,7 +13,7 @@ from requests.exceptions import ConnectionError, ConnectTimeout
 
 BASE_PATH = "{}/GLR_Manager".format(os.getenv("LOCALAPPDATA"))
 PROFILES_PATH = "{}/Profiles".format(BASE_PATH)
-CURRENT_VERSION = "1.3.7"
+CURRENT_VERSION = "1.3.8"
 
 class Game:
     def __init__(self, id, name, type):
@@ -113,8 +113,9 @@ class ProfileManager:
         os.remove("{}/{}.json".format(PROFILES_PATH,profile_name))
 
 class Config:
-    def __init__(self, steam_path = "", no_hook = True, compatibility_mode = False, version = CURRENT_VERSION, last_profile = "default", check_update = True):
+    def __init__(self, steam_path = "", greenluma_path = "", no_hook = True, compatibility_mode = False, version = CURRENT_VERSION, last_profile = "default", check_update = True):
         self.steam_path = steam_path
+        self.greenluma_path = greenluma_path
         self.no_hook = no_hook
         self.compatibility_mode = compatibility_mode
         self.version = version
@@ -131,7 +132,10 @@ class Config:
         for key, value in data.items():
             if key in vars(config).keys():
                 setattr(config, key, value)
-            
+        
+        if not "greenluma_path" in data and "steam_path" in data:
+            if os.path.isfile(os.path.join(config.steam_path, "DLLInjector.exe")):
+                config.greenluma_path = config.steam_path
         return config
 
     @staticmethod
@@ -174,15 +178,15 @@ def get_config():
         config.export_config()
 
 def createFiles(games):
-    if not os.path.exists("{}/AppList".format(config.steam_path)):
-        os.makedirs("{}/AppList".format(config.steam_path))
+    if not os.path.exists("{}/AppList".format(config.greenluma_path)):
+        os.makedirs("{}/AppList".format(config.greenluma_path))
     else:
-        shutil.rmtree("{}/AppList".format(config.steam_path))
+        shutil.rmtree("{}/AppList".format(config.greenluma_path))
         time.sleep(0.5)
-        os.makedirs("{}/AppList".format(config.steam_path))
+        os.makedirs("{}/AppList".format(config.greenluma_path))
 
     for i in range(len(games)):
-        with open("{}/AppList/{}.txt".format(config.steam_path,i),"w") as file:
+        with open("{}/AppList/{}.txt".format(config.greenluma_path,i),"w") as file:
             file.write(games[i].id)
 
 def parseGames(html):
