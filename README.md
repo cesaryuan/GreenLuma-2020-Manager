@@ -24,16 +24,16 @@ Also, keep in mind that not **every game** is available to play through Steam fa
 I **highly advise** you to use the "Legit stealth mode" checking the box "NoHook" on my program:
 ![alt text](https://i.imgur.com/xpAXU1b.png)
 
-## Latest release: **[GreenLuma 2020 Manager v1.3.7](https://github.com/BlueAmulet/GreenLuma-2020-Manager/releases)**
+## Latest release: **[GreenLuma 2020 Manager v1.3.8](https://github.com/BlueAmulet/GreenLuma-2020-Manager/releases)**
 
 ## Features
-  * Easily manage profiles for various games(good to circumvent the 160 id limit)
+  * Easily manage profiles for various games(good to circumvent the 168 id limit)
     * Add/Remove 1 or more games at once
     * Add/Remove profiles
   * Search for any game you want to add direct from the app
     * Search results are directly from SteamDB
     * Sort the results from Type(DLC, Game, etc..) or Name
-  * Generate the Applist, close steam and run the GL2020 in one click
+  * Generate the Applist, close steam and run GreenLuma 2020 in one click
     * You can choose any GL2020 parameters before launch
     * It will detect whether the steam is open or not and close it if necessary
   * All the profiles info are in JSON files so you can easily share with anyone
