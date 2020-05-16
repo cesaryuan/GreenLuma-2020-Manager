@@ -33,9 +33,9 @@ I **highly advise** you to use the "Legit stealth mode" checking the box "NoHook
   * Search for any game you want to add direct from the app
     * Search results are directly from SteamDB
     * Sort the results from Type(DLC, Game, etc..) or Name
-  * Generate the Applist, close steam and run GreenLuma 2020 in one click
+  * Generate the Applist, close Steam and run GreenLuma 2020 in one click
     * You can choose any GL2020 parameters before launch
-    * It will detect whether the steam is open or not and close it if necessary
+    * It will detect whether Steam is open or not and close it if necessary
   * All the profiles info are in JSON files so you can easily share with anyone
     * The profiles are saved on: C:\Users\YOUR_USER\AppData\Local\GLR_Manager\Profiles
 
