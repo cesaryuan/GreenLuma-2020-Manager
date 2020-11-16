@@ -17,6 +17,7 @@
 dist/*
 build/*
 __pycache__/
+env/
 
 # GL2020_Updater
 GL2020_Updater/.vs

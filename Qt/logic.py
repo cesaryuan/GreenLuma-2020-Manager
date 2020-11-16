@@ -149,7 +149,7 @@ class MainWindow(QMainWindow):
             self.populate_table(self.main_window.search_result,result)
         else:
             self.toggle_hidden(self.main_window.searching_frame)
-            self.show_popup("Can't connect to Steamdb. Check if you have internet connection.", lambda : self.toggle_widget(self.main_window.generic_popup, True))
+            self.show_popup("Can't connect to Steam. Check if you have internet connection.", lambda : self.toggle_widget(self.main_window.generic_popup, True))
 
     def setup_search_table(self):
         h_header = self.main_window.search_result.horizontalHeader()
@@ -230,7 +230,7 @@ class MainWindow(QMainWindow):
             self.replaceConfig("WaitForProcessTermination"," 0")
             self.replaceConfig("EnableFakeParentProcess"," 1")
             self.replaceConfig("CreateFiles", " 2")
-            self.replaceConfig("FileToCreate_2", " NoHook.bin", True)
+            self.replaceConfig("FileToCreate_2", " StealthMode.bin", True)
         else:
             self.replaceConfig("CommandLine"," -inhibitbootstrap")
             self.replaceConfig("WaitForProcessTermination"," 1")
