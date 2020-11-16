@@ -213,7 +213,7 @@ class MainWindow(QMainWindow):
             return
 
         args = ["DLLInjector.exe"]
-        self.replaceConfig("FileToCreate_1", " NoQuestion.bin")
+        self.replaceConfig("FileToCreate_1", " NoQuestion.bin", True)
         
         with core.get_config() as config:
             config.no_hook = self.main_window.no_hook_checkbox.isChecked()

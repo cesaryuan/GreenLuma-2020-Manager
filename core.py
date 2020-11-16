@@ -1,18 +1,13 @@
 import os
+import requests
 import subprocess
 import shutil
 import json
-import ujson
 import time
 import sys
 import logging
 from contextlib import contextmanager
-from typing import Iterator
 from bs4 import BeautifulSoup as parser
-from multiprocessing.pool import ThreadPool
-from itertools import chain, islice
-# import cfscrape
-import requests
 from requests.exceptions import ConnectionError, ConnectTimeout
 
 BASE_PATH = "{}/GLR_Manager".format(os.getenv("LOCALAPPDATA"))
