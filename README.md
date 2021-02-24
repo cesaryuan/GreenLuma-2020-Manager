@@ -24,7 +24,7 @@ Also, keep in mind that not **every game** is available to play through Steam fa
 I **highly advise** you to use the "Legit stealth mode" checking the box "NoHook" on my program:
 ![alt text](https://i.imgur.com/xpAXU1b.png)
 
-## Latest release: **[GreenLuma 2020 Manager v1.3.8.3](https://github.com/BlueAmulet/GreenLuma-2020-Manager/releases)**
+## Latest release: **[GreenLuma 2020 Manager v1.3.8.4](https://github.com/BlueAmulet/GreenLuma-2020-Manager/releases)**
 
 ## Features
   * Easily manage profiles for various games(good to circumvent the 168 id limit)
