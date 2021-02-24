@@ -305,6 +305,8 @@ class MainWindow(QMainWindow):
                         config.steam_path = path
                         if config.greenluma_path == "" and os.path.isfile(os.path.join(path, "DLLInjector.exe")):
                             config.greenluma_path = path
+                            self.main_window.settings_greenluma_path.setText(path)
+                    self.main_window.settings_steam_path.setText(path)
                     self.toggle_widget(self.main_window.set_steam_path_window)
                 else:
                     self.main_window.label_steam_error.setText("Steam.exe not in path")
@@ -328,6 +330,7 @@ class MainWindow(QMainWindow):
                     path = os.path.abspath(path)
                     with core.get_config() as config:
                         config.greenluma_path = path
+                    self.main_window.settings_greenluma_path.setText(path)
                     self.toggle_widget(self.main_window.set_greenluma_path_window)
                 else:
                     self.main_window.label_greenluma_error.setText("DLLInjector.exe not in path")

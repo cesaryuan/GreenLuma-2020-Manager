@@ -262,8 +262,11 @@ def queryGames(query):
 
 def runUpdater():
     if "-NoUpdate" not in sys.argv and config.check_update:
-        subprocess.run("GL2020 Updater.exe")
-    
+        try:
+            subprocess.run("GL2020 Updater.exe")
+        except FileNotFoundError as err:
+            logging.exception(err)
+
     # Post update measure
     if "-PostUpdate" in sys.argv:
         for fl in os.listdir("./"):
