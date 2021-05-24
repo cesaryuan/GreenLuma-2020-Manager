@@ -1,3 +1,4 @@
+import cloudscraper
 import os
 import requests
 import subprocess
@@ -9,16 +10,17 @@ import logging
 from contextlib import contextmanager
 from bs4 import BeautifulSoup as parser
 from requests.exceptions import ConnectionError, ConnectTimeout
+from cloudscraper.exceptions import CloudflareException, CaptchaException
 
 BASE_PATH = "{}/GLR_Manager".format(os.getenv("LOCALAPPDATA"))
 PROFILES_PATH = "{}/Profiles".format(BASE_PATH)
-CURRENT_VERSION = "1.3.8.4"
+CURRENT_VERSION = "1.3.8.5"
 
 class Game:
     def __init__(self, id, name, type):
-        self.id = id
-        self.name = name
-        self.type = type
+        self.id = id.strip()
+        self.name = name.strip()
+        self.type = type.strip()
 
     def to_JSON(self):
         return {"id": self.id, "name": self.name, "type": self.type}
@@ -113,7 +115,7 @@ class ProfileManager:
         os.remove("{}/{}.json".format(PROFILES_PATH,profile_name))
 
 class Config:
-    def __init__(self, steam_path = "", greenluma_path = "", no_hook = True, compatibility_mode = True, version = CURRENT_VERSION, last_profile = "default", check_update = True):
+    def __init__(self, steam_path = "", greenluma_path = "", no_hook = True, compatibility_mode = True, version = CURRENT_VERSION, last_profile = "default", check_update = True, use_steamdb = True):
         self.steam_path = steam_path
         self.greenluma_path = greenluma_path
         self.no_hook = no_hook
@@ -121,6 +123,7 @@ class Config:
         self.version = version
         self.last_profile = last_profile
         self.check_update = check_update
+        self.use_steamdb = use_steamdb
 
     def export_config(self):
         with open("{}/config.json".format(BASE_PATH), "w") as outfile:
@@ -189,20 +192,19 @@ def createFiles(games):
         with open("{}/AppList/{}.txt".format(config.greenluma_path,i),"w") as file:
             file.write(games[i].id)
 
-# def parseGames(html):
-#     p = parser(html, 'html.parser')
+def parseSteamDB(html):
+    p = parser(html, 'html.parser')
 
-#     rows = p.find_all("tr", class_= "app")
+    rows = p.find_all("tr", class_="app")
 
-#     games = []
-#     for row in rows:
-#         data = row("td")
-#         if(data[1].get_text() != "Unknown"):
-#             game = Game(data[0].get_text(),data[2].get_text(),data[1].get_text())
-#             #print(game.to_string())
-#             games.append(game)
+    games = []
+    for row in rows:
+        data = row("td")
+        if(data[1].get_text() != "Unknown"):
+            game = Game(data[0].get_text(), data[2].get_text(), data[1].get_text())
+            games.append(game)
 
-#     return games
+    return games
 
 def parseDlcs(html):
     p = parser(html, 'html.parser')
@@ -253,10 +255,16 @@ def queryfy(input_):
 
 def queryGames(query):
     try:
-        params = {"term": query, "count": 25, "start": 0, "category1": 998}
-        response = requests.get("https://store.steampowered.com/search/results", params=params)
-        return parseGames(response.content)
-    except (ConnectionError, ConnectTimeout) as err:
+        if config.use_steamdb:
+            scraper = cloudscraper.create_scraper()
+            params = {"a": "app", "q": query, "type": -1, "category": 0}
+            response = scraper.get("https://steamdb.info/search/", params=params)
+            return parseSteamDB(response.content)
+        else:
+            params = {"term": query, "count": 25, "start": 0, "category1": 998}
+            response = requests.get("https://store.steampowered.com/search/results", params=params)
+            return parseGames(response.content)
+    except (ConnectionError, ConnectTimeout, CloudflareException, CaptchaException) as err:
         logging.exception(err)
         return err
 

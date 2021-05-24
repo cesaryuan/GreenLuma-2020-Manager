@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QMainWindow, QHeaderView, QTableWidgetItem, QShortcu
 from PyQt5.QtCore import  QAbstractItemModel, Qt, QModelIndex, QVariant, QThread, QEvent, pyqtSignal, QAbstractTableModel, QSortFilterProxyModel
 from PyQt5.QtGui import QKeySequence, QIcon
 from shutil import copyfile
+from cloudscraper.exceptions import CloudflareException, CaptchaException
 import os
 import core
 import subprocess
@@ -144,12 +145,16 @@ class MainWindow(QMainWindow):
         self.search_thread.start()
 
     def search_games_done(self, result):
+        self.toggle_hidden(self.main_window.searching_frame)
         if type(result) is list:
-            self.toggle_hidden(self.main_window.searching_frame)
             self.populate_table(self.main_window.search_result,result)
         else:
-            self.toggle_hidden(self.main_window.searching_frame)
-            self.show_popup("Can't connect to Steam. Check if you have internet connection.", lambda : self.toggle_widget(self.main_window.generic_popup, True))
+            if isinstance(result, CloudflareException) or isinstance(result, CaptchaException):
+                self.show_popup("Cloudflare bypass failed, disabling SteamDB.", lambda : self.toggle_widget(self.main_window.generic_popup, True))
+                with core.get_config() as config:
+                    config.use_steamdb = False
+            else:
+                self.show_popup("Can't connect to " + ("SteamDB" if core.config.use_steamdb else "Steam") + ". Check if you have internet connection.", lambda : self.toggle_widget(self.main_window.generic_popup, True))
 
     def setup_search_table(self):
         h_header = self.main_window.search_result.horizontalHeader()
